@@ -1,0 +1,54 @@
+.toggle {
+    display: flex;
+    align-items: center;
+}
+
+.toggle__label {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    color: #000000;
+    margin: 0 14px 0 0;
+}
+
+.toggle__container {
+    width: 36px;
+    background-color: #2be080;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 20px;
+    height: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.toggle__dot {
+    cursor: pointer;
+    background-color: white;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    position: absolute;
+    left: 22px;
+    transition: all 0.3s ease;
+}
+
+.toggle__container_disabled {
+    background-color: #bbb;
+}
+.toggle__dot_disabled {
+    left: 6px;
+}
+
+
+
+@media screen and (max-width: 769px) {
+    .toggle__label {
+        margin: 0 12px 0 0;
+    }
+}

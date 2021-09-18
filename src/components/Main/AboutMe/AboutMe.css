@@ -1,0 +1,152 @@
+.about-me {
+    padding: 110px 70px 0;
+    position: relative;
+}
+
+.about-me__photo {
+    background-image: url('../../../images/studentPhoto.jpg');
+    border-radius: 10px;
+    width: 270px;
+    height: 327px;
+    background-position: center center;
+    background-size: cover;
+    position: absolute;
+    top: 227px;
+    right: 70px;
+}
+
+.about-me__name {
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 58px;
+    letter-spacing: -0.04em;
+    margin: 66px 0 0;
+}
+
+.about-me__job-age {
+    font-weight: 500;
+    line-height: 20px;
+    font-size: 18px;
+    margin: 18px 0 0;
+}
+
+.about-me__main-text {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    margin: 26px 0 0;
+    max-width: 49.5%;
+}
+
+.about-me__links-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 99px 0 0;
+    display: flex;
+}
+
+.about-me__links-li {
+    margin-right: 20px;
+}
+
+.about-me__links-li:last-child {
+    margin-right: 0;
+}
+
+.about-me__link {
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+@media screen and (max-width: 769px) {
+    .about-me {
+        padding: 90px 50px 0;
+    }
+
+    .about-me__photo {
+        width: 255px;
+        height: 307px;
+        top: 207px;
+        right: 50px;
+    }
+
+    .about-me__name {
+        font-size: 40px;
+        line-height: 40px;
+    }
+
+    .about-me__job-age {
+        line-height: 18px;
+        font-size: 12px;
+        margin: 16px 0 0;
+    }
+
+    .about-me__main-text {
+        font-size: 12px;
+        line-height: 18px;
+        margin: 20px 0 0;
+        max-width: 54%;
+    }
+
+    .about-me__links-list {
+        margin: 87px 0 0;
+    }
+}
+
+@media screen and (max-width: 690px) {
+    .about-me__photo {
+        max-width: 98%;
+        min-height: 352px;
+        position: static;
+        margin: 0 auto;
+        margin-top: 60px;
+    }
+}
+
+
+@media screen and (max-width: 424px) {
+    .about-me {
+        padding: 70px 14px 0;
+    }
+
+    .about-me__photo {
+        min-width: 100%;
+        min-height: 352px;
+        position: static;
+        margin-top: 60px;
+    }
+
+    .about-me__name {
+        font-size: 30px;
+        line-height: 36px;
+        margin: 40px 0 0;
+    }
+
+    .about-me__job-age {
+        font-size: 11px;
+        line-height: 16px;
+        margin: 20px 0 0;
+    }
+
+    .about-me__main-text {
+        font-size: 11px;
+        line-height: 16px;
+        margin: 20px 0 0;
+        min-width: 100%;
+    }
+
+    .about-me__links-list {
+        margin: 40px 0 0;
+    }
+
+    .about-me__links-li {
+        margin-right: 26px;
+    }
+
+    .about-me__link {
+        font-size: 14px;
+        line-height: 17px;
+    }
+}
