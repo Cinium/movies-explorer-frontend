@@ -1,16 +1,20 @@
 import './BurgerMenu.css';
 import profileIcon from '../../images/profile-icon.svg';
 import { Link, NavLink } from 'react-router-dom';
+import { useRef } from 'react';
 
 function BurgerMenu() {
+    const checkboxRef = useRef();
+
+    const closeMenu = () => {
+        checkboxRef.current.checked = false;
+    }
+
     return (
         <div className="burger-menu">
-            <input id="burger-toggle" type="checkbox" />
+            <input id="burger-toggle" type="checkbox" ref={checkboxRef} />
 
-            <label
-                className="burger-menu__button"
-                htmlFor="burger-toggle"
-            >
+            <label className="burger-menu__button" htmlFor="burger-toggle">
                 <span className="burger-menu__icon"></span>
             </label>
 
@@ -20,7 +24,9 @@ function BurgerMenu() {
                         <NavLink
                             className="burger-menu__item"
                             activeClassName="burger-menu__item_active"
-                            exact to="/"
+                            exact
+                            to="/"
+                            onClick={closeMenu}
                         >
                             Главная
                         </NavLink>
@@ -30,6 +36,7 @@ function BurgerMenu() {
                             className="burger-menu__item"
                             activeClassName="burger-menu__item_active"
                             to="/movies"
+                            onClick={closeMenu}
                         >
                             Фильмы
                         </NavLink>
@@ -39,6 +46,7 @@ function BurgerMenu() {
                             className="burger-menu__item"
                             activeClassName="burger-menu__item_active"
                             to="/saved-movies"
+                            onClick={closeMenu}
                         >
                             Сохранённые фильмы
                         </NavLink>
@@ -47,6 +55,7 @@ function BurgerMenu() {
                 <Link
                     to="/profile"
                     className="burger-menu__profile-button"
+                    onClick={closeMenu}
                 >
                     Аккаунт
                     <img
