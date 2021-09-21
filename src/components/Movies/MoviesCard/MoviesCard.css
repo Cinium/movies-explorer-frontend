@@ -108,7 +108,7 @@
     }
 }
 
-@media screen and (max-width: 424px) {
+@media screen and (max-width: 769px) {
     .movies-card__info {
         padding: 14px;
     }

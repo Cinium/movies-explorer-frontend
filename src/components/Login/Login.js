@@ -22,32 +22,25 @@ function Login() {
                     type="email"
                     className="login__input"
                     id="email"
+                    required
                 />
 
-                <label
-                    className="login__input-label"
-                    htmlFor="password"
-                >
+                <label className="login__input-label" htmlFor="password">
                     Пароль
                 </label>
                 <input
                     type="password"
                     className="login__input"
                     id="password"
+                    required
                 />
 
-                <button
-                    className="login__submit button"
-                    type="submit"
-                >
+                <button className="login__submit button" type="submit">
                     Войти
                 </button>
                 <p className="login__to-register">
                     Ещё не зарегистрированы?
-                    <Link
-                        to="/signup"
-                        className="login__to-register-link"
-                    >
+                    <Link to="/signup" className="login__to-register-link">
                         Регистрация
                     </Link>
                 </p>

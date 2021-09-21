@@ -69,7 +69,7 @@
 }
 
 .burger-menu__profile-button {
-    margin-top: calc(100vh - 402px);
+    margin-top: calc(100vh - 450px);
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
@@ -138,6 +138,6 @@
     }
 
     .burger-menu__profile-button {
-		margin-top: calc(100vh - 335px);
+		margin-top: calc(100vh - 400px);
     }
 }

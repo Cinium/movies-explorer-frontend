@@ -43,6 +43,7 @@ function SearchForm(props) {
                         className="search-form__input"
                         type="text"
                         placeholder="Фильм"
+                        required
                         style={{ color: inputColor }}
                         ref={inputRef}
                         onChange={handleChange}

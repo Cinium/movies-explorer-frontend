@@ -15,28 +15,24 @@ function Register() {
             </Link>
             <h2 className="register__greeting">Добро пожаловать!</h2>
             <form className="register__form">
-                <label
-                    className="register__input-label"
-                    htmlFor="name"
-                >
+                <label className="register__input-label" htmlFor="name">
                     Имя
                 </label>
                 <input
                     type="email"
                     className="register__input"
                     id="name"
+                    required
                 />
 
-                <label
-                    className="register__input-label"
-                    htmlFor="email"
-                >
+                <label className="register__input-label" htmlFor="email">
                     E-mail
                 </label>
                 <input
                     type="email"
                     className="register__input"
                     id="email"
+                    required
                 />
 
                 <label
@@ -49,20 +45,15 @@ function Register() {
                     type="password"
                     className="register__input"
                     id="password"
+                    required
                 />
 
-                <button
-                    className="register__submit button"
-                    type="submit"
-                >
+                <button className="register__submit button" type="submit">
                     Зарегистрироваться
                 </button>
                 <p className="register__to-login">
                     Уже зарегистрированы?
-                    <Link
-                        to="/signin"
-                        className="register__to-login-link"
-                    >
+                    <Link to="/signin" className="register__to-login-link">
                         Войти
                     </Link>
                 </p>
