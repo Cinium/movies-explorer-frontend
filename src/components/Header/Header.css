@@ -1,0 +1,125 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 74px;
+    padding: 0 70px;
+    position: relative;
+}
+
+.header__logo {
+    display: flex;
+    
+}
+
+.header__register-button {
+    padding: 8px 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    line-height: 16px;
+    font-weight: 500;
+    font-size: 12px;
+    color: white;
+    text-decoration: none;
+}
+
+.header__login-button {
+    padding: 8px 20px;
+    border: none;
+    color: inherit;
+    background-color: #2be080;
+    color: black;
+    cursor: pointer;
+    border-radius: 3px;
+    line-height: 16px;
+    font-weight: 500;
+    font-size: 12px;
+    margin-left: 30px;
+    text-decoration: none;
+}
+
+.header__profile-button {
+    font-size: 14px;
+    line-height: 16px;
+    line-height: 94%;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    padding-left: 7px;
+}
+
+.header__profile-icon {
+    margin-left: 17px;
+    background-color: #f9f9f9;
+    padding: 8px 7.25px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.header__profile-button:hover {
+    background-color: #eee;
+    opacity: 1;
+}
+
+.header__profile-button:hover .header__profile-icon {
+    background-color: #ddd;
+}
+
+.header__nav-container {
+    display: flex;
+    align-items: center;
+}
+
+.header__nav {
+    text-decoration: none;
+    color: black;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: right;
+    margin: 0 0 0 44px;
+}
+
+.header__nav:last-child {
+    margin: 0 0 0 16px;
+}
+
+.header__nav_active {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: right;
+    color: #000000;
+}
+
+@media screen and (max-width: 769px) {
+    .header {
+        min-height: 74px;
+        padding: 0 30px;
+    }
+}
+
+@media screen and (max-width: 321px) {
+    .header {
+        min-height: 74px;
+        padding: 18px 14px;
+        box-sizing: border-box;
+    }
+
+    .header__register-button {
+        font-weight: 500;
+        font-size: 10px;
+        line-height: 16px;
+    }
+
+    .header__login-button {
+        padding: 5px 12px;
+        font-size: 10px;
+        line-height: 16px;
+        margin-left: 26px;
+    }
+}

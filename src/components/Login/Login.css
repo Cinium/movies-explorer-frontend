@@ -1,0 +1,138 @@
+.login {
+    max-width: 396px;
+    margin: auto;
+    padding: 70px 0;
+}
+
+.login__greeting {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    margin: 40px 0 0;
+}
+
+.login__form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+}
+
+.login__input-label {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
+    color: #a0a0a0;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.login__input-label:first-child {
+    margin-top: 0;
+}
+
+.login__input {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #000000;
+    background: #f9f9f9;
+    border: none;
+    border-radius: 8px;
+    min-height: 46px;
+    outline: none;
+    padding: 15px;
+    margin-bottom: 179px;
+    box-sizing: border-box;
+    transition: all 0.2s;
+}
+
+.login__input:first-of-type {
+    margin: 0;
+}
+
+.login__input:focus {
+    background: rgba(43, 224, 128, 0.2);
+}
+
+.login__submit {
+    background: #2be080;
+    border-radius: 3px;
+    border: none;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #ffffff;
+    min-height: 45px;
+}
+
+.login__to-register {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #a0a0a0;
+    margin: 16px 0 0;
+}
+
+.login__to-register-link {
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #2be080;
+    text-decoration: none;
+    transition: all 0.2s;
+    border-radius: 30px;
+    margin-left: 6px;
+}
+
+.login__to-register-link:hover {
+    background: #2be080;
+    color: white;
+    padding: 4px 8px;
+    margin-left: 6px;
+}
+
+@media screen and (max-width: 769px) {
+    .login {
+        padding: 232px 0;
+    }
+}
+
+@media screen and (max-width: 424px) {
+    .login {
+        padding: 56px 30px;
+    }
+
+    .login__logo {
+        display: flex;
+        justify-content: center;
+    }
+
+    .login__greeting {
+        margin: 50px 0 0;
+        text-align: center;
+    }
+
+    .login__form {
+        margin-top: 80px;
+    }
+
+    .login__input:last-of-type {
+        margin-bottom: 267px;
+    }
+
+    .login__to-register {
+        font-size: 12px;
+        line-height: 15px;
+        margin: 14px 0 0;
+    }
+
+    .login__to-register-link {
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
