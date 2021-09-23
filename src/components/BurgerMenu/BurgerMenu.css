@@ -18,7 +18,6 @@
 .burger-menu__icon,
 .burger-menu__icon::before,
 .burger-menu__icon::after {
-    display: block;
     position: absolute;
     width: 100%;
     height: 2.5px;
@@ -28,10 +27,12 @@
 .burger-menu__icon::before {
     content: '';
     top: -8px;
+    background-color: inherit;
 }
 .burger-menu__icon::after {
     content: '';
     top: 8px;
+    background-color: inherit;
 }
 
 .burger-menu__menu {
@@ -100,16 +101,19 @@
 
 #burger-toggle:checked ~ .burger-menu__button > span {
     transform: rotate(45deg);
+    background-color: black;
 }
 
 #burger-toggle:checked ~ .burger-menu__button > span::before {
     top: 0;
     transform: rotate(0);
+    background-color: black;
 }
 
 #burger-toggle:checked ~ .burger-menu__button > span::after {
     top: 0;
     transform: rotate(90deg);
+    background-color: black;
 }
 
 #burger-toggle:checked ~ .burger-menu__button {

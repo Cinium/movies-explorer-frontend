@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Login.css';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 
-function Login() {
+function Login({ handleLogin }) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    function handleInputChange(e) {
+        e.target.id === 'email' && setEmail(e.target.value);
+        e.target.id === 'password' && setPassword(e.target.value);
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        handleLogin(email, password);
+    }
+
     return (
         <div className="login">
             <Link to="/" className="login__logo button">
@@ -14,7 +28,7 @@ function Login() {
                 />
             </Link>
             <h2 className="login__greeting">Рады видеть!</h2>
-            <form className="login__form">
+            <form className="login__form" onSubmit={handleSubmit}>
                 <label className="login__input-label" htmlFor="email">
                     E-mail
                 </label>
@@ -23,6 +37,8 @@ function Login() {
                     className="login__input"
                     id="email"
                     required
+                    onChange={handleInputChange}
+                    value={email}
                 />
 
                 <label className="login__input-label" htmlFor="password">
@@ -33,6 +49,8 @@ function Login() {
                     className="login__input"
                     id="password"
                     required
+                    onChange={handleInputChange}
+                    value={password}
                 />
 
                 <button className="login__submit button" type="submit">

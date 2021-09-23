@@ -1,15 +1,19 @@
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     min-height: 74px;
     padding: 0 70px;
     position: relative;
+    display: flex;
+}
+
+.header__wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .header__logo {
-    display: flex;
-    
+    display: inline-flex;
 }
 
 .header__register-button {
@@ -59,17 +63,12 @@
     transition: all 0.2s;
 }
 
-.header__profile-button:hover {
-    background-color: #eee;
-    opacity: 1;
-}
-
 .header__profile-button:hover .header__profile-icon {
     background-color: #ddd;
 }
 
 .header__nav-container {
-    display: flex;
+    display: inline-flex;
     align-items: center;
 }
 
