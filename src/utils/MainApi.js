@@ -77,44 +77,44 @@ class MainApi {
         return this._getResponse(res);
     }
 
-    async createMovie({
+    async createMovie(
         country,
+        description,
         director,
         duration,
-        year,
-        description,
-        image,
-        trailer,
-        thumbnail,
         movieId,
-        nameRU,
+        image,
         nameEN,
-    }) {
+        nameRU,
+        trailer,
+        year,
+        thumbnail,
+    ) {
         const res = await fetch(`${this._baseUrl}/movies`, {
             method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: {
+            body: JSON.stringify({
                 country,
+                description,
                 director,
                 duration,
-                year,
-                description,
-                image,
-                trailer,
-                thumbnail,
                 movieId,
-                nameRU,
+                image,
                 nameEN,
-            },
+                nameRU,
+                trailer,
+                year,
+                thumbnail,
+            }),
         });
 
         return this._getResponse(res);
     }
 
-    async deleteMovie({ movieId }) {
+    async deleteMovie(movieId) {
         const res = await fetch(`${this._baseUrl}/movies/${movieId}`, {
             method: 'DELETE',
             credentials: 'include',
@@ -128,7 +128,7 @@ class MainApi {
             return res.json();
         }
         // return Promise.reject(res);
-        return Promise.reject(`${res.status}`);
+        return Promise.reject(res);
     }
 }
 

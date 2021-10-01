@@ -1,33 +1,39 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import Preloader from '../../Preloader/Preloader';
+import userContext from '../../../contexts/userContext';
 
 function MoviesCardList({
-    isCardSaved,
-    buttonText,
-    loadMovies,
+    toggleLikeState,
+    deleteSavedMovie,
     isLoading,
     movies,
-    location,
+    likedMovies,
+    isCardSaved,
 }) {
-    
-    useEffect(() => {
-        loadMovies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location]);
+    const user = useContext(userContext);
+
+    function checkMovieLike(movie) {
+        if (likedMovies) {
+            return likedMovies.some(m => movie.id === m.movieId);
+        }
+    }
 
     return isLoading ? (
         <Preloader />
     ) : (
         <div className="movies-list">
-            {movies.map((movie, i) => {
+            {movies.map(movie => {
                 return (
                     <MoviesCard
-                        isSaved={isCardSaved}
-                        buttonText={buttonText}
+                        isOwner={user._id}
                         movie={movie}
-                        key={i}
+                        key={movie.id || movie.movieId}
+                        toggleLikeState={toggleLikeState}
+                        deleteSavedMovie={deleteSavedMovie}
+                        saved={isCardSaved}
+                        liked={isCardSaved ? false : checkMovieLike(movie)}
                     />
                 );
             })}

@@ -1,23 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Register.css';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
+import useForm from '../../utils/Validation';
 
 function Register({ handleRegister }) {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const { values, handleChange, errors, isValid, resetForm } = useForm();
 
-    function handleInputChange(e) {
-        e.target.id === 'name' && setName(e.target.value);
-        e.target.id === 'email' && setEmail(e.target.value);
-        e.target.id === 'password' && setPassword(e.target.value);
-    }
-
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
-        handleRegister(name, email, password)
+        const { name, email, password } = values;
+
+        await handleRegister(name, email, password);
+        resetForm();
     }
 
     return (
@@ -36,24 +32,36 @@ function Register({ handleRegister }) {
                 </label>
                 <input
                     type="text"
-                    className="register__input"
+                    className={`register__input ${
+                        errors.name && 'register__input_error'
+                    }`}
                     id="name"
+                    name="name"
+                    minLength="2"
+                    maxLength="30"
                     required
-                    onChange={handleInputChange}
-                    value={name}
+                    onChange={handleChange}
                 />
+                <span className="register__input-error">
+                    {errors.name}
+                </span>
 
                 <label className="register__input-label" htmlFor="email">
                     E-mail
                 </label>
                 <input
                     type="email"
-                    className="register__input"
+                    className={`register__input ${
+                        errors.email && 'register__input_error'
+                    }`}
                     id="email"
+                    name="email"
                     required
-                    onChange={handleInputChange}
-                    value={email}
+                    onChange={handleChange}
                 />
+                <span className="register__input-error">
+                    {errors.email}
+                </span>
 
                 <label
                     className="register__input-label"
@@ -63,14 +71,25 @@ function Register({ handleRegister }) {
                 </label>
                 <input
                     type="password"
-                    className="register__input"
+                    className={`register__input ${
+                        errors.password && 'register__input_error'
+                    }`}
                     id="password"
+                    name="password"
                     required
-                    onChange={handleInputChange}
-                    value={password}
+                    onChange={handleChange}
                 />
+                <span className="register__input-error">
+                    {errors.password}
+                </span>
 
-                <button className="register__submit button" type="submit">
+                <button
+                    className={`register__submit button ${
+                        !isValid && 'register__submit_disabled'
+                    }`}
+                    type="submit"
+                    disabled={!isValid && true}
+                >
                     Зарегистрироваться
                 </button>
                 <p className="register__to-login">

@@ -4,7 +4,7 @@ class MovieApi {
     }
 
     async getMovies() {
-        const res = await fetch(`${this._baseUrl}/users/me`);
+        const res = await fetch(`${this._baseUrl}`);
 
         return this._getResponse(res);
     }

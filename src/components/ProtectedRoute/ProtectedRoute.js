@@ -11,7 +11,7 @@ function ProtectedRoute({ component: Component, ...props }) {
                 currentUser ? (
                     <Component {...props} />
                 ) : (
-                    <Redirect to="/" />
+                    <Redirect exact to="/" />
                 )
             }
         </Route>

@@ -27,12 +27,16 @@
     align-items: center;
     padding: 7px;
     padding-left: 22px;
-    border: 1.5px solid;
+    border: rgba(170, 170, 170, 0.2) 1.5px solid;
     box-sizing: border-box;
     border-radius: 50px;
     transition: all 0.25s;
     width: 100%;
     margin-right: 41px;
+}
+
+.search-form__search-bar:focus-within {
+    border-color: #2be080;
 }
 
 .search-form__submit {

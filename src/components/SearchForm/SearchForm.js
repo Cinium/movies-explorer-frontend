@@ -1,15 +1,13 @@
 import './SearchForm.css';
 import searchIcon from '../../images/search-icon.svg';
 import Toggle from '../Toggle/Toggle';
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 
-function SearchForm(props) {
+function SearchForm({ searchMovies }) {
     const [input, setInput] = useState('');
     const [inputColor, setInputColor] = useState('#a0a0a0');
-    const [searchBarColor, setSearchBarColor] = useState(
-        'rgba(170, 170, 170, 0.2)'
-    );
     const inputRef = useRef();
+    const [selected, setSelected] = useState(JSON.parse(localStorage.getItem('toggleState')));
 
     function handleChange(e) {
         setInput(inputRef.current.value);
@@ -21,38 +19,33 @@ function SearchForm(props) {
         }
     }
 
-    function changeColor(e) {
-        e.type === 'focus'
-            ? setSearchBarColor('#2be080')
-            : setSearchBarColor('rgba(170, 170, 170, 0.2)');
-    }
-
     function searchHandler(e) {
         e.preventDefault();
+
+        searchMovies(input, selected);
     }
+
+    const memo = useCallback(() => {
+        searchMovies(input, selected);
+    }, [input, searchMovies, selected])
 
     return (
         <div className="search-form">
-            <form
-                className="search-form__form"
-                onSubmit={searchHandler}>
-                <div
-                    className="search-form__search-bar"
-                    style={{ borderColor: searchBarColor }}>
+            <form className="search-form__form" onSubmit={searchHandler}>
+                <div className="search-form__search-bar">
                     <input
                         className="search-form__input"
                         type="text"
                         placeholder="Фильм"
-                        required
                         style={{ color: inputColor }}
                         ref={inputRef}
                         onChange={handleChange}
-                        onFocus={changeColor}
-                        onBlur={changeColor}
+                        value={input}
                     />
                     <button
                         className="search-form__submit button"
-                        type="submit">
+                        type="submit"
+                    >
                         <img
                             className="search-form__submit-icon"
                             alt="иконка поиска"
@@ -60,7 +53,12 @@ function SearchForm(props) {
                         />
                     </button>
                 </div>
-                <Toggle label={'Короткометражки'} />
+                <Toggle
+                    label={'Короткометражки'}
+                    selected={selected}
+                    setSelected={setSelected}
+                    memo={memo}
+                />
             </form>
         </div>
     );

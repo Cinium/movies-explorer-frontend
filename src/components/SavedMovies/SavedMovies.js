@@ -1,43 +1,56 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import './SavedMovies.css';
 import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
-import { savedMovies } from '../../utils/constants/movies';
-import React, { useState } from 'react';
+import NothingFound from '../NothingFound/NothingFound';
+import React, { useEffect } from 'react';
 
-function simulateFetch() {
-    return new Promise(res => {
-        setTimeout(() => {
-            res(savedMovies);
-        }, 2000);
-    });
-}
+function SavedMovies({
+    loadMovies,
+    isLoading,
+    deleteSavedMovie,
+    movies,
+    searchMovies,
+    setMovies,
+    errorState,
+}) {
+    useEffect(() => {
+        const savedMovies = JSON.parse(
+            localStorage.getItem('savedMovies')
+        );
 
-function SavedMovies() {
-    const [isLoading, setIsLoading] = useState(null);
-    const [movies, setMovies] = useState([]);
+        localStorage.setItem('toggleState', JSON.stringify(false))
 
-    async function loadMovies() {
-        setIsLoading(true);
-        try {
-            const moviesList = await simulateFetch();
-            setMovies(moviesList);
-        } catch (err) {
-            console.log(err);
-        } finally {
-            setIsLoading(false);
-        }
+        setMovies(savedMovies);
+    }, []);
+
+    async function searchSavedMovies(input, checkbox) {
+        const savedMovies = await loadMovies();
+        searchMovies(input, savedMovies, setMovies, checkbox);
     }
 
     return (
         <div className="saved-movies">
-            <SearchForm />
-            <MoviesCardList
-                isCardSaved={true}
-                buttonText={'+'}
-                loadMovies={loadMovies}
-                isLoading={isLoading}
-                movies={movies}
-            />
+            <SearchForm searchMovies={searchSavedMovies} />
+
+            {!movies || movies.length === 0 ? (
+                <NothingFound
+                    message={
+                        movies === null
+                            ? 'Начните поиск!'
+                            : 'Ничего не найдено :-('
+                    }
+                    errorState={errorState}
+                />
+            ) : (
+                <MoviesCardList
+                    deleteSavedMovie={deleteSavedMovie}
+                    loadMovies={loadMovies}
+                    isLoading={isLoading}
+                    movies={movies}
+                    isCardSaved={true}
+                />
+            )}
         </div>
     );
 }

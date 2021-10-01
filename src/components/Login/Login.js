@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Login.css';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
+import useForm from '../../utils/Validation';
 
 function Login({ handleLogin }) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const { values, handleChange, errors, isValid, resetForm } = useForm();
 
-    function handleInputChange(e) {
-        e.target.id === 'email' && setEmail(e.target.value);
-        e.target.id === 'password' && setPassword(e.target.value);
-    }
-
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
-        handleLogin(email, password);
+        const { email, password } = values;
+
+        await handleLogin(email, password);
+        resetForm();
     }
 
     return (
@@ -34,26 +32,42 @@ function Login({ handleLogin }) {
                 </label>
                 <input
                     type="email"
-                    className="login__input"
+                    className={`login__input ${
+                        errors.email && 'login__input_error'
+                    }`}
                     id="email"
+                    name="email"
                     required
-                    onChange={handleInputChange}
-                    value={email}
+                    onChange={handleChange}
                 />
+                <span className="login__input-error">
+                    {errors.email}
+                </span>
 
                 <label className="login__input-label" htmlFor="password">
                     Пароль
                 </label>
                 <input
                     type="password"
-                    className="login__input"
+                    className={`login__input ${
+                        errors.password && 'login__input_error'
+                    }`}
                     id="password"
+                    name="password"
                     required
-                    onChange={handleInputChange}
-                    value={password}
+                    onChange={handleChange}
                 />
+                <span className="login__input-error">
+                    {errors.password}
+                </span>
 
-                <button className="login__submit button" type="submit">
+                <button
+                    className={`login__submit button ${
+                        !isValid && 'login__submit_disabled'
+                    }`}
+                    type="submit"
+                    disabled={!isValid && true}
+                >
                     Войти
                 </button>
                 <p className="login__to-register">

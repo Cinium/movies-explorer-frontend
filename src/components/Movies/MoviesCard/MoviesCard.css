@@ -43,6 +43,12 @@
     width: 100%;
     height: 200px;
     overflow: hidden;
+    transition: all .2s;
+}
+
+.movies-card__image-container:hover {
+    cursor: pointer;
+    opacity: .8;
 }
 
 .movies-card__image {
