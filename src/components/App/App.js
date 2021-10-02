@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    Route,
-    Switch,
-    useHistory,
-} from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import './App.css';
@@ -20,9 +16,11 @@ import mainApi from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import userContext from '../../contexts/userContext';
 import movieApi from '../../utils/MoviesApi';
+import Popup from '../Popup/Popup';
 
 function App() {
     const [isMobile, setIsMobile] = useState(false);
+    const [popupIsOpen, setPopupIsOpen] = useState(false);
 
     const [cardsInRow, setCardsInRow] = useState(3);
     const [numberOfCards, setNumberOfCards] = useState(0);
@@ -68,11 +66,15 @@ function App() {
             const res = await mainApi.register(name, email, password);
 
             if (!res) {
-                throw new Error('Что-то не так')
+                throw new Error('Что-то не так');
             }
 
             await handleLogin(email, password);
         } catch (e) {
+            setPopupIsOpen(true);
+            setTimeout(() => {
+                setPopupIsOpen(false);
+            }, 7000);
             console.log(e);
         }
     }
@@ -83,8 +85,13 @@ function App() {
             setCurrentUser(res);
             localStorage.setItem('currentUser', JSON.stringify(res));
             await loadSavedMovies();
+            setMainMovies(null);
             history.push('/movies');
         } catch (e) {
+            setPopupIsOpen(true);
+            setTimeout(() => {
+                setPopupIsOpen(false);
+            }, 7000);
             console.log(e);
         }
     }
@@ -104,7 +111,7 @@ function App() {
             JSON.parse(localStorage.getItem('filteredLikedMovies'))
         );
         setMainMovies(JSON.parse(localStorage.getItem('mainMovies')));
-        localStorage.setItem('toggleState', JSON.stringify(false))
+        localStorage.setItem('toggleState', JSON.stringify(false));
     }
 
     function changeUserInfo(email, name) {
@@ -117,17 +124,18 @@ function App() {
                     name: res.name,
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                setPopupIsOpen(true);
+                setTimeout(() => {
+                    setPopupIsOpen(false);
+                }, 7000);
+                console.log(err);
+            });
     }
 
-    async function searchMovies(
-        input,
-        moviesList,
-        setMovies,
-        isMain,
-    ) {
+    async function searchMovies(input, moviesList, setMovies, isMain) {
         setIsLoading(true);
-        const checkbox = JSON.parse(localStorage.getItem('toggleState'))
+        const checkbox = JSON.parse(localStorage.getItem('toggleState'));
 
         try {
             const searchResult = await moviesList.filter(obj => {
@@ -211,7 +219,7 @@ function App() {
         }
     }
 
-    function toggleLikeState(data, isLiked) {
+    function toggleLikeState(data, isLiked, setIsLiked) {
         if (!isLiked) {
             const thumbnail = `https://api.nomoreparties.co${data.image.formats.thumbnail.url}`;
 
@@ -240,8 +248,13 @@ function App() {
                         JSON.stringify([...likedMovies, res])
                     );
                 })
-                .catch(err => {
-                    console.log(err);
+                .catch(e => {
+                    setIsLiked(false)
+                    setPopupIsOpen(true);
+                    setTimeout(() => {
+                        setPopupIsOpen(false);
+                    }, 7000);
+                    console.log(e);
                 });
         } else {
             deleteSavedMovie(data.id);
@@ -272,6 +285,10 @@ function App() {
                 );
             })
             .catch(err => {
+                setPopupIsOpen(true);
+                setTimeout(() => {
+                    setPopupIsOpen(false);
+                }, 7000);
                 console.log(err);
             });
     }
@@ -345,6 +362,7 @@ function App() {
                     ]}
                     component={Footer}
                 />
+                <Popup isOpen={popupIsOpen} setIsOpen={setPopupIsOpen} />
             </userContext.Provider>
         </div>
     );

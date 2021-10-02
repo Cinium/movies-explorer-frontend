@@ -17,7 +17,7 @@ function MoviesCard({
     );
 
     async function handleLike() {
-        await toggleLikeState(movie, isLiked);
+        await toggleLikeState(movie, isLiked, setIsLiked);
         setIsLiked(!isLiked);
     }
 

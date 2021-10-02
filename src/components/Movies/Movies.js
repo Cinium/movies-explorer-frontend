@@ -52,7 +52,7 @@ function Movies({
         const slicedPosts = movies.slice(start, end);
         setCardsToShow([...cardsToShow, ...slicedPosts]);
     }
-
+    
     return (
         <div className="movies">
             <SearchForm

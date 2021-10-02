@@ -36,9 +36,9 @@ function SavedMovies({
             {!movies || movies.length === 0 ? (
                 <NothingFound
                     message={
-                        movies === null
+                        !movies
                             ? 'Начните поиск!'
-                            : 'Ничего не найдено :-('
+                            : 'Ничего('
                     }
                     errorState={errorState}
                 />

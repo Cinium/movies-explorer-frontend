@@ -12,7 +12,7 @@ function Register({ handleRegister }) {
 
         const { name, email, password } = values;
 
-        await handleRegister(name, email, password);
+        handleRegister(name, email, password);
         resetForm();
     }
 
