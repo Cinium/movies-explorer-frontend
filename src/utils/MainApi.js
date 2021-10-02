@@ -127,12 +127,10 @@ class MainApi {
         if (res.ok) {
             return res.json();
         }
-        // return Promise.reject(res);
         return Promise.reject(res);
     }
 }
 
-// const mainApi = new MainApi('http://api.domain404.nomoredomains.club');
-const mainApi = new MainApi('http://localhost:8000');
+const mainApi = new MainApi('http://api.domain404.nomoredomains.club');
 
 export default mainApi;
