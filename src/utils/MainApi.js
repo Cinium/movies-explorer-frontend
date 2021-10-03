@@ -61,8 +61,8 @@ class MainApi {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                name,
                 email,
+                name
             }),
         });
 
@@ -132,5 +132,6 @@ class MainApi {
 }
 
 const mainApi = new MainApi('https://api.domain404.nomoredomains.club');
+// const mainApi = new MainApi('http://localhost:8000');
 
 export default mainApi;

@@ -16,11 +16,10 @@ import mainApi from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import userContext from '../../contexts/userContext';
 import movieApi from '../../utils/MoviesApi';
-import Popup from '../Popup/Popup';
 
 function App() {
     const [isMobile, setIsMobile] = useState(false);
-    const [popupIsOpen, setPopupIsOpen] = useState(false);
+    const [responseMessage, setResponseMessage] = useState('');
 
     const [cardsInRow, setCardsInRow] = useState(3);
     const [numberOfCards, setNumberOfCards] = useState(0);
@@ -71,11 +70,8 @@ function App() {
 
             await handleLogin(email, password);
         } catch (e) {
-            setPopupIsOpen(true);
-            setTimeout(() => {
-                setPopupIsOpen(false);
-            }, 7000);
-            console.log(e);
+            const errText = await e.text();
+            setResponseMessage(errText.slice(12, -2));
         }
     }
 
@@ -88,11 +84,8 @@ function App() {
             setMainMovies(null);
             history.push('/movies');
         } catch (e) {
-            setPopupIsOpen(true);
-            setTimeout(() => {
-                setPopupIsOpen(false);
-            }, 7000);
-            console.log(e);
+            const errText = await e.text();
+            setResponseMessage(errText.slice(12, -2));
         }
     }
 
@@ -114,23 +107,21 @@ function App() {
         localStorage.setItem('toggleState', JSON.stringify(false));
     }
 
-    function changeUserInfo(email, name) {
-        mainApi
-            .changeUserInfo(name, email)
-            .then(res => {
-                setCurrentUser({
-                    ...currentUser,
-                    email: res.email,
-                    name: res.name,
-                });
-            })
-            .catch(err => {
-                setPopupIsOpen(true);
-                setTimeout(() => {
-                    setPopupIsOpen(false);
-                }, 7000);
-                console.log(err);
+    async function changeUserInfo(email, name) {
+        try {
+            console.log("TRY")
+            const res = mainApi.changeUserInfo(email, name);
+            setCurrentUser({
+                ...currentUser,
+                email: res.email,
+                name: res.name,
             });
+        } catch (e) {
+            console.log('CATCH')
+            const errText = await e.text();
+            console.log(e);
+            setResponseMessage(errText.slice(12, -2));
+        }
     }
 
     async function searchMovies(input, moviesList, setMovies, isMain) {
@@ -249,11 +240,7 @@ function App() {
                     );
                 })
                 .catch(e => {
-                    setIsLiked(false)
-                    setPopupIsOpen(true);
-                    setTimeout(() => {
-                        setPopupIsOpen(false);
-                    }, 7000);
+                    setIsLiked(false);
                     console.log(e);
                 });
         } else {
@@ -285,10 +272,6 @@ function App() {
                 );
             })
             .catch(err => {
-                setPopupIsOpen(true);
-                setTimeout(() => {
-                    setPopupIsOpen(false);
-                }, 7000);
                 console.log(err);
             });
     }
@@ -341,13 +324,23 @@ function App() {
                         logout={handleLogout}
                         changeUserInfo={changeUserInfo}
                         component={Profile}
+                        responseMessage={responseMessage}
+                        setResponseMessage={setResponseMessage}
                     />
 
                     <Route exact path="/signin">
-                        <Login handleLogin={handleLogin} />
+                        <Login
+                            handleLogin={handleLogin}
+                            responseMessage={responseMessage}
+                            setResponseMessage={setResponseMessage}
+                        />
                     </Route>
                     <Route exact path="/signup">
-                        <Register handleRegister={handleRegister} />
+                        <Register
+                            handleRegister={handleRegister}
+                            responseMessage={responseMessage}
+                            setResponseMessage={setResponseMessage}
+                        />
                     </Route>
                     <Route component={NotFound} />
                 </Switch>
@@ -362,7 +355,6 @@ function App() {
                     ]}
                     component={Footer}
                 />
-                <Popup isOpen={popupIsOpen} setIsOpen={setPopupIsOpen} />
             </userContext.Provider>
         </div>
     );

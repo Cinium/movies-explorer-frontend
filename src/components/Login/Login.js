@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Login.css';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 import useForm from '../../utils/Validation';
 
-function Login({ handleLogin }) {
+function Login({ handleLogin, responseMessage, setResponseMessage }) {
     const { values, handleChange, errors, isValid, resetForm } = useForm();
+
+    useEffect(() => {
+        setResponseMessage('');
+    }, []);
 
     async function handleSubmit(e) {
         e.preventDefault();
 
         const { email, password } = values;
 
-        await handleLogin(email, password);
+        handleLogin(email, password);
         resetForm();
     }
 
@@ -39,10 +43,9 @@ function Login({ handleLogin }) {
                     name="email"
                     required
                     onChange={handleChange}
+                    value={values.email || ''}
                 />
-                <span className="login__input-error">
-                    {errors.email}
-                </span>
+                <span className="login__input-error">{errors.email}</span>
 
                 <label className="login__input-label" htmlFor="password">
                     Пароль
@@ -56,11 +59,15 @@ function Login({ handleLogin }) {
                     name="password"
                     required
                     onChange={handleChange}
+                    value={values.password || ''}
                 />
                 <span className="login__input-error">
                     {errors.password}
                 </span>
 
+                <span className="login__response-error">
+                    {responseMessage || ''}
+                </span>
                 <button
                     className={`login__submit button ${
                         !isValid && 'login__submit_disabled'

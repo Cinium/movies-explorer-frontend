@@ -27,16 +27,16 @@
     justify-content: space-between;
     align-items: center;
     padding: 17px 0;
-    border: rgba(43, 224, 128, 0) 1px solid ;
+    border: rgba(43, 224, 128, 0) 1px solid;
     border-bottom: #e8e8e8 solid 1px;
     box-sizing: border-box;
     cursor: default;
-    transition: all .3s;
+    transition: all 0.3s;
     white-space: nowrap;
 }
 
 .profile__data-item:focus-within {
-    border: rgba(43, 224, 128, 1) 1px solid ;
+    border: rgba(43, 224, 128, 1) 1px solid;
     border-radius: 10px;
     padding-left: 10px;
     padding-right: 10px;
@@ -62,7 +62,7 @@
     border: none;
     width: 100%;
     outline: none;
-    transition: all .3s;
+    transition: all 0.3s;
     cursor: pointer;
 }
 .profile__user-data:focus {
@@ -78,7 +78,18 @@
 }
 
 .profile__buttons {
-    margin-top: 220px;
+    margin-top: 215px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile__response-error {
+    color: #ee3465;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    margin: 0 0 5px;
 }
 
 .profile__edit-button {
@@ -147,6 +158,14 @@
         margin-top: 96px;
     }
 
+    .profile__data-item:last-of-type {
+        border-bottom: none;
+    }
+
+    .profile__data-item:last-of-type:focus-within {
+        border-bottom: rgba(43, 224, 128, 1) 1px solid;
+    }
+
     .profile__buttons {
         margin-top: 210px;
     }
@@ -154,7 +173,7 @@
 
 @media screen and (max-width: 424px) {
     .profile {
-        padding: 70px 30px 32px;
+        padding: 70px 30px 40px;
     }
 
     .profile__data-container {
@@ -166,7 +185,6 @@
     }
 
     .profile__buttons {
-        margin-top: calc(100vh - 409px);
+        margin-top: 347px;
     }
-
 }

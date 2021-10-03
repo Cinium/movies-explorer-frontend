@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Register.css';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 import useForm from '../../utils/Validation';
 
-function Register({ handleRegister }) {
+function Register({
+    handleRegister,
+    responseMessage,
+    setResponseMessage,
+}) {
     const { values, handleChange, errors, isValid, resetForm } = useForm();
+
+    useEffect(() => {
+        setResponseMessage('')
+    }, []);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -41,6 +49,7 @@ function Register({ handleRegister }) {
                     maxLength="30"
                     required
                     onChange={handleChange}
+                    value={values.name || ''}
                 />
                 <span className="register__input-error">
                     {errors.name}
@@ -58,6 +67,7 @@ function Register({ handleRegister }) {
                     name="email"
                     required
                     onChange={handleChange}
+                    value={values.email || ''}
                 />
                 <span className="register__input-error">
                     {errors.email}
@@ -78,11 +88,15 @@ function Register({ handleRegister }) {
                     name="password"
                     required
                     onChange={handleChange}
+                    value={values.password || ''}
                 />
                 <span className="register__input-error">
                     {errors.password}
                 </span>
 
+                <span className="register__response-error">
+                    {responseMessage || ''}
+                </span>
                 <button
                     className={`register__submit button ${
                         !isValid && 'register__submit_disabled'

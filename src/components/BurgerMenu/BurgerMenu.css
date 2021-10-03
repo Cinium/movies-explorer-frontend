@@ -116,12 +116,6 @@
     background-color: black;
 }
 
-#burger-toggle:checked ~ .burger-menu__button {
-    top: 20.16px;
-    right: 20.16px;
-    position: fixed;
-}
-
 #burger-toggle:checked ~ .burger-menu__menu {
     visibility: visible;
 	box-shadow: 0px 0px 0 9999px rgba(0, 0, 0, 0.3);

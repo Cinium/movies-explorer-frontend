@@ -1,14 +1,24 @@
+import React, { useEffect } from 'react';
 import './Profile.css';
 import { useContext, useState } from 'react';
 import userContext from '../../contexts/userContext';
 import useForm from '../../utils/Validation';
 
-function Profile({ logout, changeUserInfo }) {
+function Profile({
+    logout,
+    changeUserInfo,
+    responseMessage,
+    setResponseMessage,
+}) {
     const user = useContext(userContext);
 
     const { values, handleChange, errors, isValid, resetForm } = useForm();
     const [isNameNew, setIsNameNew] = useState(false);
     const [isEmailNew, setIsEmailNew] = useState(false);
+
+    useEffect(() => {
+        setResponseMessage('');
+    }, []);
 
     function select(e) {
         const input = e.target;
@@ -32,15 +42,14 @@ function Profile({ logout, changeUserInfo }) {
                 : setIsEmailNew(false);
         }
 
-        handleChange(e)
+        handleChange(e);
     }
 
     async function handleProfileChange() {
-        const email = values.email || user.email
+        const email = values.email || user.email;
         const name = values.name || user.name;
 
-        await changeUserInfo(name, email);
-        resetForm()
+        await changeUserInfo(email, name);
     }
 
     return (
@@ -82,6 +91,9 @@ function Profile({ logout, changeUserInfo }) {
                 </div>
                 <span className="profile__input-error">
                     {errors.email}
+                </span>
+                <span className="profile__response-error">
+                    {responseMessage || ''}
                 </span>
             </form>
 

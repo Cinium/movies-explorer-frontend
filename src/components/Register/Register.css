@@ -65,8 +65,14 @@
     margin-top: 5px;
 }
 
-.register__input-error:last-of-type {
-    margin-bottom: 91px;
+.register__response-error {
+    margin-top: 91px;
+    margin-bottom: 5px;
+    color: #ee3465;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    text-align: center;
 }
 
 .register__submit {
@@ -138,8 +144,14 @@
         margin-top: 80px;
     }
 
-    .register__input-error:last-of-type {
-        margin-bottom: 179px;
+    .register__response-error {
+        margin-top: 174px;
+        margin-bottom: 5px;
+        color: #ee3465;
+        font-weight: 500;
+        font-size: 11px;
+        line-height: 13px;
+        text-align: center;
     }
 
     .register__to-login {
