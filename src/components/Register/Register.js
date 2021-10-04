@@ -8,11 +8,12 @@ function Register({
     handleRegister,
     responseMessage,
     setResponseMessage,
+    isLoading,
 }) {
     const { values, handleChange, errors, isValid, resetForm } = useForm();
 
     useEffect(() => {
-        setResponseMessage('')
+        setResponseMessage({});
     }, []);
 
     async function handleSubmit(e) {
@@ -20,8 +21,7 @@ function Register({
 
         const { name, email, password } = values;
 
-        handleRegister(name, email, password);
-        resetForm();
+        handleRegister(name, email, password, resetForm);
     }
 
     return (
@@ -95,16 +95,17 @@ function Register({
                 </span>
 
                 <span className="register__response-error">
-                    {responseMessage || ''}
+                    {responseMessage.text || ''}
                 </span>
                 <button
                     className={`register__submit button ${
-                        !isValid && 'register__submit_disabled'
+                        (!isValid || isLoading) &&
+                        'register__submit_disabled'
                     }`}
                     type="submit"
-                    disabled={!isValid && true}
+                    disabled={(!isValid || isLoading) && true}
                 >
-                    Зарегистрироваться
+                    {isLoading ? 'Регистрация....' : 'Зарегистрироваться'}
                 </button>
                 <p className="register__to-login">
                     Уже зарегистрированы?

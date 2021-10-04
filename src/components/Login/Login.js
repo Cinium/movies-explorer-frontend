@@ -4,20 +4,24 @@ import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 import useForm from '../../utils/Validation';
 
-function Login({ handleLogin, responseMessage, setResponseMessage }) {
+function Login({
+    handleLogin,
+    responseMessage,
+    setResponseMessage,
+    isLoading,
+}) {
     const { values, handleChange, errors, isValid, resetForm } = useForm();
 
     useEffect(() => {
-        setResponseMessage('');
+        setResponseMessage({});
     }, []);
 
-    async function handleSubmit(e) {
+    function handleSubmit(e) {
         e.preventDefault();
 
         const { email, password } = values;
 
-        handleLogin(email, password);
-        resetForm();
+        handleLogin(email, password, resetForm);
     }
 
     return (
@@ -66,16 +70,16 @@ function Login({ handleLogin, responseMessage, setResponseMessage }) {
                 </span>
 
                 <span className="login__response-error">
-                    {responseMessage || ''}
+                    {responseMessage.text || ''}
                 </span>
                 <button
                     className={`login__submit button ${
-                        !isValid && 'login__submit_disabled'
+                        (!isValid || isLoading) && 'login__submit_disabled'
                     }`}
                     type="submit"
-                    disabled={!isValid && true}
+                    disabled={(!isValid || isLoading) && true}
                 >
-                    Войти
+                    {isLoading ? 'Вход....' : 'Войти'}
                 </button>
                 <p className="login__to-register">
                     Ещё не зарегистрированы?

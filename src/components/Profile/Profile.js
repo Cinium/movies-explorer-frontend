@@ -9,6 +9,7 @@ function Profile({
     changeUserInfo,
     responseMessage,
     setResponseMessage,
+    isLoading,
 }) {
     const user = useContext(userContext);
 
@@ -17,7 +18,7 @@ function Profile({
     const [isEmailNew, setIsEmailNew] = useState(false);
 
     useEffect(() => {
-        setResponseMessage('');
+        setResponseMessage({});
     }, []);
 
     function select(e) {
@@ -43,15 +44,15 @@ function Profile({
         }
 
         handleChange(e);
+
+        setResponseMessage({});
     }
 
     async function handleProfileChange() {
         const email = values.email || user.email;
         const name = values.name || user.name;
 
-        await changeUserInfo(email, name);
-        
-        resetForm();
+        await changeUserInfo(email, name, resetForm);
     }
 
     return (
@@ -94,8 +95,14 @@ function Profile({
                 <span className="profile__input-error">
                     {errors.email}
                 </span>
-                <span className="profile__response-error">
-                    {responseMessage || ''}
+                <span
+                    className={`profile__response-message ${
+                        responseMessage.err
+                            ? ''
+                            : 'profile__response-message_succ'
+                    }`}
+                >
+                    {responseMessage.text || ''}
                 </span>
             </form>
 
@@ -104,15 +111,17 @@ function Profile({
                     type="button"
                     onClick={handleProfileChange}
                     disabled={
-                        isValid && (isNameNew || isEmailNew) ? false : true
+                        isValid && (isNameNew || isEmailNew) && !isLoading
+                            ? false
+                            : true
                     }
                     className={`profile__edit-button ${
-                        isValid && (isNameNew || isEmailNew)
+                        isValid && (isNameNew || isEmailNew) && !isLoading
                             ? ''
                             : 'profile__edit-button_disabled'
                     }`}
                 >
-                    Редактировать
+                    {isLoading ? 'Сохранение....' : 'Редактировать'}
                 </button>
                 <button
                     type="button"

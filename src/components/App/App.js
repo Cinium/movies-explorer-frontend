@@ -19,13 +19,13 @@ import movieApi from '../../utils/MoviesApi';
 
 function App() {
     const [isMobile, setIsMobile] = useState(false);
-    const [responseMessage, setResponseMessage] = useState('');
+    const [responseMessage, setResponseMessage] = useState({});
 
     const [cardsInRow, setCardsInRow] = useState(3);
     const [numberOfCards, setNumberOfCards] = useState(0);
 
     const [currentUser, setCurrentUser] = useState({});
-    
+
     const [isLoading, setIsLoading] = useState(null);
 
     const [mainMovies, setMainMovies] = useState([]);
@@ -59,22 +59,26 @@ function App() {
         }
     }
 
-    async function handleRegister(name, email, password) {
+    async function handleRegister(name, email, password, resetForm) {
+        setIsLoading(true);
         try {
             const res = await mainApi.register(name, email, password);
 
             if (!res) {
                 throw new Error('Что-то не так');
             }
-
+            resetForm();
             await handleLogin(email, password);
         } catch (e) {
             const errText = await e.text();
-            setResponseMessage(errText.slice(12, -2));
+            setResponseMessage({ text: errText.slice(12, -2), err: true });
+        } finally {
+            setIsLoading(false);
         }
     }
 
-    async function handleLogin(email, password) {
+    async function handleLogin(email, password, resetForm) {
+        setIsLoading(true);
         try {
             const res = await mainApi.login(email, password);
             setCurrentUser(res);
@@ -82,9 +86,12 @@ function App() {
             await loadSavedMovies();
             setMainMovies(null);
             history.push('/movies');
+            resetForm && resetForm();
         } catch (e) {
             const errText = await e.text();
-            setResponseMessage(errText.slice(12, -2));
+            setResponseMessage({ text: errText.slice(12, -2), err: true });
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -106,7 +113,8 @@ function App() {
         localStorage.setItem('toggleState', JSON.stringify(false));
     }
 
-    async function changeUserInfo(email, name) {
+    async function changeUserInfo(email, name, resetForm) {
+        setIsLoading(true);
         try {
             const res = await mainApi.changeUserInfo(email, name);
             localStorage.setItem('currentUser', JSON.stringify(res));
@@ -115,10 +123,17 @@ function App() {
                 email: res.email,
                 name: res.name,
             });
+            setResponseMessage({ text: 'Сохранено!', err: false });
+            resetForm();
+            setTimeout(() => {
+                setResponseMessage({});
+            }, 5000);
         } catch (e) {
             const errText = await e.text();
-            setResponseMessage(errText.slice(12, -2));
-            console.log(e)
+            setResponseMessage({ text: errText.slice(12, -2), err: true });
+            console.log(e);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -324,6 +339,7 @@ function App() {
                         component={Profile}
                         responseMessage={responseMessage}
                         setResponseMessage={setResponseMessage}
+                        isLoading={isLoading}
                     />
 
                     <Route exact path="/signin">
@@ -331,6 +347,7 @@ function App() {
                             handleLogin={handleLogin}
                             responseMessage={responseMessage}
                             setResponseMessage={setResponseMessage}
+                            isLoading={isLoading}
                         />
                     </Route>
                     <Route exact path="/signup">
@@ -338,6 +355,7 @@ function App() {
                             handleRegister={handleRegister}
                             responseMessage={responseMessage}
                             setResponseMessage={setResponseMessage}
+                            isLoading={isLoading}
                         />
                     </Route>
                     <Route component={NotFound} />

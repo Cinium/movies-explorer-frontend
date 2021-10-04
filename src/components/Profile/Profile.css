@@ -43,11 +43,11 @@
 }
 
 .profile__data-item:last-of-type {
-    padding-bottom: 0;
     border-bottom: none;
+    padding-bottom: 0;
 }
 
-.profile__data-item:last-child:focus-within {
+.profile__data-item:last-of-type:focus-within {
     padding-bottom: 17px;
     border: rgba(43, 224, 128, 1) 1px solid;
 }
@@ -75,6 +75,7 @@
     font-weight: 500;
     font-size: 11px;
     line-height: 13px;
+    margin-top: 5px;
 }
 
 .profile__buttons {
@@ -84,12 +85,18 @@
     align-items: center;
 }
 
-.profile__response-error {
+.profile__response-message {
     color: #ee3465;
     font-weight: 500;
     font-size: 11px;
     line-height: 13px;
-    margin: 0 0 5px;
+    margin: 5px auto 0;
+    display: block;
+    width: fit-content;
+}
+
+.profile__response-message_succ {
+    color: rgba(43, 224, 128, 1);
 }
 
 .profile__edit-button {
