@@ -131,7 +131,13 @@ class MainApi {
     }
 }
 
-const mainApi = new MainApi('https://api.domain404.nomoredomains.club');
+// const mainApi = new MainApi('https://api.domain404.nomoredomains.club');
 // const mainApi = new MainApi('http://localhost:8000');
+
+const mainApi = new MainApi(
+    `${window.location.protocol}${
+        process.env.REACT_APP_API_URL || '//localhost:8000'
+    }`
+);
 
 export default mainApi;

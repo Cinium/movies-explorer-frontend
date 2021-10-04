@@ -24,9 +24,8 @@ function App() {
     const [cardsInRow, setCardsInRow] = useState(3);
     const [numberOfCards, setNumberOfCards] = useState(0);
 
-    const [currentUser, setCurrentUser] = useState(
-        JSON.parse(localStorage.getItem('currentUser'))
-    );
+    const [currentUser, setCurrentUser] = useState({});
+    
     const [isLoading, setIsLoading] = useState(null);
 
     const [mainMovies, setMainMovies] = useState([]);
@@ -109,18 +108,17 @@ function App() {
 
     async function changeUserInfo(email, name) {
         try {
-            console.log("TRY")
-            const res = mainApi.changeUserInfo(email, name);
+            const res = await mainApi.changeUserInfo(email, name);
+            localStorage.setItem('currentUser', JSON.stringify(res));
             setCurrentUser({
                 ...currentUser,
                 email: res.email,
                 name: res.name,
             });
         } catch (e) {
-            console.log('CATCH')
             const errText = await e.text();
-            console.log(e);
             setResponseMessage(errText.slice(12, -2));
+            console.log(e)
         }
     }
 

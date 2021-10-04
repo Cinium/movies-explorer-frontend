@@ -50,6 +50,8 @@ function Profile({
         const name = values.name || user.name;
 
         await changeUserInfo(email, name);
+        
+        resetForm();
     }
 
     return (

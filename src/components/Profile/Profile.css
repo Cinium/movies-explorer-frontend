@@ -42,7 +42,7 @@
     padding-right: 10px;
 }
 
-.profile__data-item:last-child {
+.profile__data-item:last-of-type {
     padding-bottom: 0;
     border-bottom: none;
 }
