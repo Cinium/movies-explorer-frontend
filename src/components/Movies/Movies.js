@@ -22,10 +22,10 @@ function Movies({
     cardsInRow,
 }) {
     const [cardsToShow, setCardsToShow] = useState([]);
+    const [cardsToSlice, setCardsToSlice] = useState([]);
     const [selected, setSelected] = useState(false);
 
     useEffect(() => {
-        setCardsToShow([]);
         const mainMovies = JSON.parse(localStorage.getItem('mainMovies'));
         const filteredLikedMovies = JSON.parse(
             localStorage.getItem('filteredLikedMovies')
@@ -40,12 +40,13 @@ function Movies({
     }, []);
 
     useEffect(() => {
+        setCardsToShow([]);
         filterShorts();
     }, [selected, movies]);
 
     function filterShorts() {
         if (selected) {
-            setCardsToShow(
+            setCardsToSlice(
                 movies.filter(m => {
                     if (m.duration > DURATION_OF_SHORTS) {
                         return false;
@@ -54,7 +55,7 @@ function Movies({
                 })
             );
         } else {
-            setCardsToShow(movies);
+            setCardsToSlice(movies);
         }
     }
 
@@ -68,7 +69,7 @@ function Movies({
     }
 
     function sliceMovies(start, end) {
-        const slicedPosts = movies.slice(start, end);
+        const slicedPosts = cardsToSlice.slice(start, end);
         setCardsToShow([...cardsToShow, ...slicedPosts]);
     }
 
@@ -95,17 +96,17 @@ function Movies({
                         toggleLikeState={toggleLikeState}
                         isLoading={isLoading}
                         movies={
-                            movies.length > numberOfCards
+                            cardsToSlice.length > numberOfCards
                                 ? cardsToShow
-                                : movies
+                                : cardsToSlice
                         }
                         likedMovies={filteredMovies}
                         isCardSaved={false}
                         selected={selected}
                     />
-                    {movies.length > numberOfCards && (
+                    {cardsToSlice.length > numberOfCards && (
                         <MoreMovies
-                            movies={movies}
+                            movies={cardsToSlice}
                             sliceMovies={sliceMovies}
                             numberOfCards={numberOfCards}
                             setNumberOfCards={setNumberOfCards}
