@@ -1,11 +1,10 @@
 import './Toggle.css';
 
-function Toggle({ label, selected, setSelected, memo }) {
+function Toggle({ label, selected, setSelected }) {
 
-    async function changeToggle() {
-        await setSelected(!selected);
+    function changeToggle() {
+        setSelected(!selected);
         localStorage.setItem('toggleState', JSON.stringify(!selected));
-        memo();
     }
 
     return (

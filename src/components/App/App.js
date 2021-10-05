@@ -16,6 +16,12 @@ import mainApi from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import userContext from '../../contexts/userContext';
 import movieApi from '../../utils/MoviesApi';
+import {
+    DURATION_OF_SHORTS,
+    SCREEN_SIZE,
+    CARDS_FOR,
+    MORE_CARDS,
+} from '../../utils/constants/constants';
 
 function App() {
     const [isMobile, setIsMobile] = useState(false);
@@ -44,17 +50,20 @@ function App() {
     }, []);
 
     function checkViewWidth() {
-        if (window.innerWidth >= 1280) {
-            setCardsInRow(3);
-            setNumberOfCards(12);
+        if (window.innerWidth >= SCREEN_SIZE.BIG) {
+            setCardsInRow(MORE_CARDS.MANY);
+            setNumberOfCards(CARDS_FOR.BIG_SCREEN);
             setIsMobile(false);
-        } else if (768 <= window.innerWidth && window.innerWidth < 1280) {
-            setCardsInRow(2);
-            setNumberOfCards(8);
+        } else if (
+            SCREEN_SIZE.MIDDLE <= window.innerWidth &&
+            window.innerWidth < SCREEN_SIZE.BIG
+        ) {
+            setCardsInRow(MORE_CARDS.FEW);
+            setNumberOfCards(CARDS_FOR.MIDDLE_SCREEN);
             setIsMobile(false);
-        } else if (window.innerWidth < 768) {
-            setCardsInRow(2);
-            setNumberOfCards(5);
+        } else if (window.innerWidth < SCREEN_SIZE.MIDDLE) {
+            setCardsInRow(MORE_CARDS.FEW);
+            setNumberOfCards(CARDS_FOR.MOBILE);
             setIsMobile(true);
         }
     }
@@ -139,16 +148,11 @@ function App() {
 
     async function searchMovies(input, moviesList, setMovies, isMain) {
         setIsLoading(true);
-        const checkbox = JSON.parse(localStorage.getItem('toggleState'));
 
         try {
             const searchResult = await moviesList.filter(obj => {
                 let RuIncludes = false;
                 let EnIncludes = false;
-
-                if (checkbox && obj.duration > 40) {
-                    return false;
-                }
 
                 if (typeof obj.nameRU === 'string') {
                     RuIncludes = obj.nameRU
@@ -198,8 +202,7 @@ function App() {
         setIsLoading(true);
         try {
             const movies = await movieApi.getMovies();
-            localStorage.setItem('mainMovies', JSON.stringify(movies));
-            setMainMovies(movies);
+            localStorage.setItem('allMovies', JSON.stringify(movies));
             return movies;
         } catch (err) {
             console.log(err);
@@ -214,7 +217,6 @@ function App() {
         try {
             const movies = await mainApi.getSavedMovies();
             localStorage.setItem('savedMovies', JSON.stringify(movies));
-            setSavedMovies(movies);
             return movies;
         } catch (err) {
             console.log(err);

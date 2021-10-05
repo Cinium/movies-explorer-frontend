@@ -1,17 +1,13 @@
 import './SearchForm.css';
 import searchIcon from '../../images/search-icon.svg';
 import Toggle from '../Toggle/Toggle';
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef } from 'react';
 
-function SearchForm({ searchMovies }) {
-    const [input, setInput] = useState('');
+function SearchForm({ searchMovies, selected, setSelected }) {
     const [inputColor, setInputColor] = useState('#a0a0a0');
     const inputRef = useRef();
-    const [selected, setSelected] = useState(JSON.parse(localStorage.getItem('toggleState')));
 
-    function handleChange(e) {
-        setInput(inputRef.current.value);
-
+    function handleChange() {
         if (inputRef.current.value.length > 0) {
             setInputColor('black');
         } else {
@@ -22,12 +18,8 @@ function SearchForm({ searchMovies }) {
     function searchHandler(e) {
         e.preventDefault();
 
-        searchMovies(input, selected);
+        searchMovies(inputRef.current.value, false);
     }
-
-    const memo = useCallback(() => {
-        searchMovies(input, selected);
-    }, [input, searchMovies, selected])
 
     return (
         <div className="search-form">
@@ -40,7 +32,6 @@ function SearchForm({ searchMovies }) {
                         style={{ color: inputColor }}
                         ref={inputRef}
                         onChange={handleChange}
-                        value={input}
                     />
                     <button
                         className="search-form__submit button"
@@ -57,7 +48,6 @@ function SearchForm({ searchMovies }) {
                     label={'Короткометражки'}
                     selected={selected}
                     setSelected={setSelected}
-                    memo={memo}
                 />
             </form>
         </div>

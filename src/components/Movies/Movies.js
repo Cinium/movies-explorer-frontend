@@ -5,6 +5,7 @@ import MoviesCardList from './MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 import NothingFound from '../NothingFound/NothingFound';
 import React, { useEffect, useState } from 'react';
+import { DURATION_OF_SHORTS } from '../../utils/constants/constants';
 
 function Movies({
     setMovies,
@@ -21,6 +22,7 @@ function Movies({
     cardsInRow,
 }) {
     const [cardsToShow, setCardsToShow] = useState([]);
+    const [selected, setSelected] = useState(false);
 
     useEffect(() => {
         setCardsToShow([]);
@@ -37,14 +39,31 @@ function Movies({
         }
     }, []);
 
-    async function searchMainMovies(input, checkbox) {
-        if (!localStorage.getItem('allMovies')) {
-            const movies = await loadMovies();
-            localStorage.setItem('allMovies', JSON.stringify(movies));
-        }
+    useEffect(() => {
+        filterShorts();
+    }, [selected, movies]);
 
-        const mainMovies = JSON.parse(localStorage.getItem('allMovies'));
-        searchMovies(input, mainMovies, setMovies, true, checkbox);
+    function filterShorts() {
+        if (selected) {
+            setCardsToShow(
+                movies.filter(m => {
+                    if (m.duration > DURATION_OF_SHORTS) {
+                        return false;
+                    }
+                    return true;
+                })
+            );
+        } else {
+            setCardsToShow(movies);
+        }
+    }
+
+    function searchMainMovies(input) {
+        if (!localStorage.getItem('allMovies')) {
+            loadMovies();
+        }
+        const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+        searchMovies(input, allMovies, setMovies, true);
         setCardsToShow([]);
     }
 
@@ -52,10 +71,12 @@ function Movies({
         const slicedPosts = movies.slice(start, end);
         setCardsToShow([...cardsToShow, ...slicedPosts]);
     }
-    
+
     return (
         <div className="movies">
             <SearchForm
+                selected={selected}
+                setSelected={setSelected}
                 searchMovies={searchMainMovies}
             />
 
@@ -80,6 +101,7 @@ function Movies({
                         }
                         likedMovies={filteredMovies}
                         isCardSaved={false}
+                        selected={selected}
                     />
                     {movies.length > numberOfCards && (
                         <MoreMovies

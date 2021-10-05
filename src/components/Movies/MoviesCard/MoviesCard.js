@@ -48,9 +48,9 @@ function MoviesCard({
                     className="movies-card__image"
                     alt={`изображение фильма «${movie.nameRU}»`}
                     src={
-                        saved
-                            ? movie.image
-                            : `https://api.nomoreparties.co${movie.image.url}`
+                        movie.image.url
+                            ? `https://api.nomoreparties.co${movie.image.url}`
+                            : movie.image
                     }
                 />
             </div>
