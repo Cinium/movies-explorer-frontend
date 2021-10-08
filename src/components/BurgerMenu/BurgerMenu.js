@@ -3,19 +3,22 @@ import profileIcon from '../../images/profile-icon.svg';
 import { Link, NavLink } from 'react-router-dom';
 import { useRef } from 'react';
 
-function BurgerMenu() {
+function BurgerMenu({ textColor }) {
     const checkboxRef = useRef();
 
     const closeMenu = () => {
         checkboxRef.current.checked = false;
-    }
+    };
 
     return (
         <div className="burger-menu">
             <input id="burger-toggle" type="checkbox" ref={checkboxRef} />
 
             <label className="burger-menu__button" htmlFor="burger-toggle">
-                <span className="burger-menu__icon"></span>
+                <span
+                    className="burger-menu__icon"
+                    style={{ backgroundColor: textColor }}
+                ></span>
             </label>
 
             <ul className="burger-menu__menu">

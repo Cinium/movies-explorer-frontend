@@ -1,33 +1,58 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Preloader from '../../Preloader/Preloader';
+import userContext from '../../../contexts/userContext';
+import { DURATION_OF_SHORTS } from '../../../utils/constants/constants';
 
 function MoviesCardList({
-    isCardSaved,
-    buttonText,
-    loadMovies,
+    toggleLikeState,
+    deleteSavedMovie,
     isLoading,
     movies,
-    location,
+    likedMovies,
+    isCardSaved,
+    selected,
 }) {
-    
+    const user = useContext(userContext);
+    const [moviesToRender, setMoviesToRender] = useState([]);
+
+    function checkMovieLike(movie) {
+        if (likedMovies) {
+            return likedMovies.some(m => movie.id === m.movieId);
+        }
+    }
+
     useEffect(() => {
-        loadMovies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location]);
+        if (selected) {
+            setMoviesToRender(
+                movies.filter(m => {
+                    if (m.duration > DURATION_OF_SHORTS) {
+                        return false;
+                    }
+                    return true;
+                })
+            );
+        } else {
+            setMoviesToRender(movies);
+        }
+    }, [movies, selected]);
 
     return isLoading ? (
         <Preloader />
     ) : (
         <div className="movies-list">
-            {movies.map((movie, i) => {
+            {moviesToRender.map(movie => {
                 return (
                     <MoviesCard
-                        isSaved={isCardSaved}
-                        buttonText={buttonText}
+                        isOwner={user._id}
                         movie={movie}
-                        key={i}
+                        key={movie.id || movie.movieId}
+                        toggleLikeState={toggleLikeState}
+                        deleteSavedMovie={deleteSavedMovie}
+                        saved={isCardSaved}
+                        liked={isCardSaved ? false : checkMovieLike(movie)}
                     />
                 );
             })}

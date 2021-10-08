@@ -1,43 +1,80 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import './SavedMovies.css';
 import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
-import { savedMovies } from '../../utils/constants/movies';
-import React, { useState } from 'react';
+import NothingFound from '../NothingFound/NothingFound';
+import React, { useEffect, useState } from 'react';
+import { DURATION_OF_SHORTS } from '../../utils/constants/constants';
 
-function simulateFetch() {
-    return new Promise(res => {
-        setTimeout(() => {
-            res(savedMovies);
-        }, 2000);
-    });
-}
+function SavedMovies({
+    loadMovies,
+    isLoading,
+    deleteSavedMovie,
+    movies,
+    searchMovies,
+    setMovies,
+    errorState,
+}) {
+    const [selected, setSelected] = useState(false);
+    const [cardsToShow, setCardsToShow] = useState([]);
 
-function SavedMovies() {
-    const [isLoading, setIsLoading] = useState(null);
-    const [movies, setMovies] = useState([]);
+    useEffect(() => {
+        const savedMovies = JSON.parse(
+            localStorage.getItem('savedMovies')
+        );
 
-    async function loadMovies() {
-        setIsLoading(true);
-        try {
-            const moviesList = await simulateFetch();
-            setMovies(moviesList);
-        } catch (err) {
-            console.log(err);
-        } finally {
-            setIsLoading(false);
+        localStorage.setItem('toggleState', JSON.stringify(false));
+        setSelected();
+
+        setMovies(savedMovies);
+        setCardsToShow(savedMovies);
+    }, []);
+
+    useEffect(() => {
+        if (selected) {
+            setCardsToShow(
+                movies.filter(m => {
+                    if (m.duration > DURATION_OF_SHORTS) {
+                        return false;
+                    }
+                    return true;
+                })
+            );
+        } else {
+            setCardsToShow(movies);
         }
+    }, [selected, movies]);
+
+    async function searchSavedMovies(input) {
+        const savedMovies = JSON.parse(
+            localStorage.getItem('savedMovies')
+        );
+        searchMovies(input, savedMovies, setMovies, false);
     }
 
     return (
         <div className="saved-movies">
-            <SearchForm />
-            <MoviesCardList
-                isCardSaved={true}
-                buttonText={'+'}
-                loadMovies={loadMovies}
-                isLoading={isLoading}
-                movies={movies}
+            <SearchForm
+                selected={selected}
+                setSelected={setSelected}
+                searchMovies={searchSavedMovies}
             />
+
+            {!movies || movies.length === 0 ? (
+                <NothingFound
+                    message={!movies ? 'Начните поиск!' : 'Ничего('}
+                    errorState={errorState}
+                />
+            ) : (
+                <MoviesCardList
+                    deleteSavedMovie={deleteSavedMovie}
+                    loadMovies={loadMovies}
+                    isLoading={isLoading}
+                    movies={cardsToShow}
+                    isCardSaved={true}
+                    selected={selected}
+                />
+            )}
         </div>
     );
 }

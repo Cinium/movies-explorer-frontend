@@ -1,14 +1,10 @@
 import './Toggle.css';
-import { useState, useRef } from 'react';
 
-function Toggle({ label }) {
-    const [selected, setSelected] = useState(false);
-	const checkboxRef = useRef();
+function Toggle({ label, selected, setSelected }) {
 
-    async function changeToggle() {
+    function changeToggle() {
         setSelected(!selected);
-		
-		checkboxRef.current.checked = !selected
+        localStorage.setItem('toggleState', JSON.stringify(!selected));
     }
 
     return (
@@ -21,7 +17,8 @@ function Toggle({ label }) {
                 className={`toggle__container ${
                     selected ? '' : 'toggle__container_disabled'
                 }`}
-                onClick={changeToggle}>
+                onClick={changeToggle}
+            >
                 <div
                     className={`toggle__dot ${
                         selected ? '' : 'toggle__dot_disabled'
@@ -29,7 +26,10 @@ function Toggle({ label }) {
                 />
             </div>
 
-			<input type="checkbox" ref={checkboxRef} style={{display: 'none'}} />
+            <input
+                type="checkbox"
+                style={{ display: 'none' }}
+            />
         </div>
     );
 }

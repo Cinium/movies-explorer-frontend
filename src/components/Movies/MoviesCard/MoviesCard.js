@@ -1,19 +1,34 @@
 import './MoviesCard.css';
 import likedIcon from '../../../images/saved-icon.svg';
+import xIcon from '../../../images/x-icon.svg';
 import { useState } from 'react';
 
-function MoviesCard({ movie, isSaved, buttonText }) {
-    const [isLiked, setIsLiked] = useState(false);
+function MoviesCard({
+    movie,
+    toggleLikeState,
+    deleteSavedMovie,
+    saved,
+    liked,
+}) {
+    const [isLiked, setIsLiked] = useState(liked);
 
-    const buttonLikedIcon = <img src={likedIcon} alt="сохранено" />;
+    const buttonIcon = (
+        <img src={saved ? xIcon : likedIcon} alt="сохранено" />
+    );
 
-    function handleLike() {
+    async function handleLike() {
+        await toggleLikeState(movie, isLiked, setIsLiked);
         setIsLiked(!isLiked);
-        console.log('liked!');
     }
 
     function handleDelete() {
-        console.log('deleted!');
+        deleteSavedMovie(movie.movieId);
+    }
+
+    function showTrailer() {
+        saved
+            ? window.open(movie.trailer)
+            : window.open(movie.trailerLink);
     }
 
     return (
@@ -25,33 +40,30 @@ function MoviesCard({ movie, isSaved, buttonText }) {
                 </p>
             </div>
 
-            <div className="movies-card__image-container">
+            <div
+                className="movies-card__image-container"
+                onClick={showTrailer}
+            >
                 <img
                     className="movies-card__image"
                     alt={`изображение фильма «${movie.nameRU}»`}
-                    src={movie.image}
+                    src={
+                        movie.image.url
+                            ? `https://api.nomoreparties.co${movie.image.url}`
+                            : movie.image
+                    }
                 />
             </div>
 
             <button
                 type="button"
                 className={`movies-card__button button ${
-                    isLiked && !isSaved
-                        ? 'movies-card__button_liked'
-                        : ''
+                    isLiked ? 'movies-card__button_liked' : ''
                 }`}
-                onClick={isSaved ? handleDelete : handleLike}
+                onClick={!saved ? handleLike : handleDelete}
             >
-                <p
-                    className={`movies-card__button-text ${
-                        isSaved
-                            ? 'movies-card__button-text_delete'
-                            : ''
-                    }`}
-                >
-                    {isLiked && !isSaved
-                        ? buttonLikedIcon
-                        : buttonText}
+                <p className={`movies-card__button-text`}>
+                    {isLiked || saved ? buttonIcon : 'Сохранить'}
                 </p>
             </button>
         </div>

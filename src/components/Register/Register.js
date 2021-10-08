@@ -1,9 +1,30 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from 'react';
 import './Register.css';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
+import useForm from '../../utils/Validation';
 
-function Register() {
+function Register({
+    handleRegister,
+    responseMessage,
+    setResponseMessage,
+    isLoading,
+}) {
+    const { values, handleChange, errors, isValid, resetForm } = useForm();
+
+    useEffect(() => {
+        setResponseMessage({});
+    }, []);
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        const { name, email, password } = values;
+
+        handleRegister(name, email, password, resetForm);
+    }
+
     return (
         <div className="register">
             <Link className="register__logo button" to="/">
@@ -14,26 +35,44 @@ function Register() {
                 />
             </Link>
             <h2 className="register__greeting">Добро пожаловать!</h2>
-            <form className="register__form">
+            <form className="register__form" onSubmit={handleSubmit}>
                 <label className="register__input-label" htmlFor="name">
                     Имя
                 </label>
                 <input
-                    type="email"
-                    className="register__input"
+                    type="text"
+                    className={`register__input ${
+                        errors.name && 'register__input_error'
+                    }`}
                     id="name"
+                    name="name"
+                    minLength="2"
+                    maxLength="30"
                     required
+                    onChange={handleChange}
+                    value={values.name || ''}
                 />
+                <span className="register__input-error">
+                    {errors.name}
+                </span>
 
                 <label className="register__input-label" htmlFor="email">
                     E-mail
                 </label>
                 <input
                     type="email"
-                    className="register__input"
+                    className={`register__input ${
+                        errors.email && 'register__input_error'
+                    }`}
                     id="email"
+                    name="email"
                     required
+                    onChange={handleChange}
+                    value={values.email || ''}
                 />
+                <span className="register__input-error">
+                    {errors.email}
+                </span>
 
                 <label
                     className="register__input-label"
@@ -43,13 +82,31 @@ function Register() {
                 </label>
                 <input
                     type="password"
-                    className="register__input"
+                    className={`register__input ${
+                        errors.password && 'register__input_error'
+                    }`}
                     id="password"
+                    name="password"
                     required
+                    onChange={handleChange}
+                    value={values.password || ''}
                 />
+                <span className="register__input-error">
+                    {errors.password}
+                </span>
 
-                <button className="register__submit button" type="submit">
-                    Зарегистрироваться
+                <span className="register__response-error">
+                    {responseMessage.text || ''}
+                </span>
+                <button
+                    className={`register__submit button ${
+                        (!isValid || isLoading) &&
+                        'register__submit_disabled'
+                    }`}
+                    type="submit"
+                    disabled={(!isValid || isLoading) && true}
+                >
+                    {isLoading ? 'Регистрация....' : 'Зарегистрироваться'}
                 </button>
                 <p className="register__to-login">
                     Уже зарегистрированы?
